@@ -1,4 +1,13 @@
-﻿param($number, $name, $else)
+﻿<#
+
+Julian Bruegger
+25.01.2021
+TelefonnotizTool ICT-BZ
+
+#>
+
+
+param($number, $name, $else)
 
 $name = $name+$else
 Add-Type -AssemblyName System.Windows.Forms
@@ -6,9 +15,12 @@ Add-Type -AssemblyName System.Windows.Forms
 
 $Form                            = New-Object system.Windows.Forms.Form
 $Form.ClientSize                 = New-Object System.Drawing.Point(400,400)
-$Form.text                       = "Telefon-Notiz tool"
+$Form.text                       = "Telefon-Notiz Tool"
 $Form.TopMost                    = $false
-$Form.icon                       = "favicon.ico"
+$FormImage = [system.drawing.image]::FromFile("./bin/ICT-BZ_Logo_Druck_Elemente_CMYK.png")
+$Form.BackgroundImage = $FormImage
+
+$Form.icon                       = "./bin/favicon.ico"
 
 
 $numberbox                       = New-Object system.Windows.Forms.TextBox
@@ -134,13 +146,13 @@ $coppybutton.location            = New-Object System.Drawing.Point(248,355)
 $coppybutton.Font                = New-Object System.Drawing.Font('Microsoft Sans Serif',10)
 
 $Form.controls.AddRange(@($numberbox,$Tel_Nr,$mailbox,$namebox,$TextBox1,$Label1,$Label2,$betrefflable,$infolable,$betreffbox,$moreinfobox,$company,$cancle,$coppybutton,$ComboBox1))
-.controls.AddRange(@($numberbox,$Tel_Nr,$mailbox,$namebox,$coppybutton,$Label1,$Label2,$betrefflable,$infolable,$betreffbox,$cancle,$ComboBox1,$moreinfobox))
 
-$text = "Telefon Nummer: "+$numberbox.Text +"`r`nE-Mail: "+$mailbox.Text+"`r`nName: "+$namebox.Text+"`r`nBetreff: "+$betreffbox.Text+"`r`nWeitere Infos: "+$moreinfobox.Text
 
 $cancle.Add_Click({$form.Close()})
 $coppybutton.Add_Click(
 {  
+    $text = "Telefon Nummer: "+$numberbox.Text +"`r`nE-Mail: "+$mailbox.Text+"`r`nName: "+$namebox.Text+"`r`nFirma: "+$TextBox1.Text+"`r`nBetreff: "+$betreffbox.Text+"`r`nWeitere Infos: "+$moreinfobox.Text
+
     Set-Clipboard $text
     #$form.Close()
 
@@ -148,6 +160,4 @@ $coppybutton.Add_Click(
 
 [void]$Form.ShowDialog()
 
-generate
 
-Write-Host text
