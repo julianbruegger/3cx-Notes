@@ -19,10 +19,10 @@ $Form.minimumSize = New-Object System.Drawing.Size(450,450)
 $Form.maximumSize = New-Object System.Drawing.Size(450,450) 
 $Form.text                       = "Telefon-Notiz Tool"
 $Form.TopMost                    = $false
-$FormImage = [system.drawing.image]::FromFile(".\bin\3cx_notes.png")
+$FormImage = [system.drawing.image]::FromFile("C:\temp\Telefonie\bin\3cx_notes.png")
 $Form.BackgroundImage = $FormImage
 $Form.BackgroundImageLayout = "Zoom"
-$Form.icon                       = "./bin/favicon.ico"
+$Form.icon                       = "C:\temp\Telefonie\bin\favicon.ico"
 
 
 $numberbox                       = New-Object system.Windows.Forms.TextBox
