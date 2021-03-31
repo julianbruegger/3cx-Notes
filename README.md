@@ -1,10 +1,18 @@
+![GitHub repo size](https://img.shields.io/github/repo-size/julianbruegger/3cx-Notes)    ![Lines of code](https://img.shields.io/tokei/lines/github/julianbruegger/3cx-Notes)      ![GitHub all releases](https://img.shields.io/github/downloads/julianbruegger/3cx-Notes/total)        ![GitHub release (latest by date)](https://img.shields.io/github/v/release/julianbruegger/3cx-Notes)         [![GitHub stars](https://img.shields.io/github/stars/julianbruegger/3cx-Notes)](https://github.com/julianbruegger/3cx-Notes/stargazers)
 # 3cx-Notes
 Für die bei uns im Betrieb angewendete 3cx Telefonlösung habe ich eine Notizsoftware erstellt. 
 
 Diese ist einfach aufgebaut und ist kinderleicht zu bedienen. Basierend ist diese auf Powershell. 
 <img src="./bin/tool.png">
 
-## Setup
+## Installation
+Um das Tool zu Installieren sollte einfach die akutellste `Installler.EXE` heruntergeladen werden. 
+
+[<img src="https://img.shields.io/badge/release-V2.0.0-brightgreen">](https://github.com/julianbruegger/3cx-Notes/releases/latest)
+
+
+
+### Setup 3CX
 <img src="./bin/3cx_main.png">
 Im Hauptmenü werden die Einstellungen unten rechts geöffnet. 
 <img src="./bin/3cx_erweitert.png">
