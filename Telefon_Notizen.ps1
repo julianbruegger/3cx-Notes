@@ -14,15 +14,15 @@ Add-Type -AssemblyName System.Windows.Forms
 [System.Windows.Forms.Application]::EnableVisualStyles()
 
 $Form                            = New-Object system.Windows.Forms.Form
-$Form.ClientSize                 = New-Object System.Drawing.Point(400,400)
-$Form.minimumSize = New-Object System.Drawing.Size(450,450) 
-$Form.maximumSize = New-Object System.Drawing.Size(450,450) 
+$Form.ClientSize                 = New-Object System.Drawing.Point(600,400)
+$Form.minimumSize = New-Object System.Drawing.Size(650,450) 
+$Form.maximumSize = New-Object System.Drawing.Size(650,450) 
 $Form.text                       = "Telefon-Notiz Tool"
 $Form.TopMost                    = $false
-$FormImage = [system.drawing.image]::FromFile("C:\temp\Telefonie\bin\3cx_notes.png")
+$FormImage = [system.drawing.image]::FromFile($PSScriptRoot+"\bin\3cx_notes.png")
 $Form.BackgroundImage = $FormImage
 $Form.BackgroundImageLayout = "Zoom"
-$Form.icon                       = "C:\temp\Telefonie\bin\favicon.ico"
+$Form.icon                       = $PSScriptRoot+"\bin\favicon.ico"
 
 
 $numberbox                       = New-Object system.Windows.Forms.TextBox
@@ -147,7 +147,25 @@ $coppybutton.height              = 30
 $coppybutton.location            = New-Object System.Drawing.Point(248,355)
 $coppybutton.Font                = New-Object System.Drawing.Font('Calibri',10)
 
-$Form.controls.AddRange(@($numberbox,$Tel_Nr,$mailbox,$namebox,$TextBox1,$Label1,$Label2,$betrefflable,$infolable,$betreffbox,$moreinfobox,$company,$cancle,$coppybutton,$ComboBox1))
+
+$ComboBox1                       = New-Object system.Windows.Forms.ComboBox
+$ComboBox1.text                  = "Empfänger"
+$ComboBox1.width                 = 200
+$ComboBox1.height                = 20
+@('david.tassi@ict-bz.ch','horst.lang@ict-bz.ch','julia.stadelmann@ict-bz.ch','urs.nussbaumer@ict-bz.ch','nino.antonucci@ict-bz.ch','roland.spengler@ict-bz.ch','kilian.buerli@ict-bz.ch','rainer.klatt@ict-bz.ch','julian.bruegger@ict-bz.ch','lucas.taham@ict-bz.ch','tamara.tita@ict-bz.ch') | Sort-Object | ForEach-Object {[void] $ComboBox1.Items.Add($_)}
+$ComboBox1.location              = New-Object System.Drawing.Point(410,118)
+$ComboBox1.Font                  = New-Object System.Drawing.Font('Microsoft Sans Serif',10)
+
+$mailbtn                         = New-Object system.Windows.Forms.Button
+$mailbtn.text                    = "Send Mail"
+$mailbtn.width                   = 126
+$mailbtn.height                  = 30
+$mailbtn.location                = New-Object System.Drawing.Point(414,355)
+$mailbtn.Font                    = New-Object System.Drawing.Font('Microsoft Sans Serif',10)
+$mailbtn.BackColor               = [System.Drawing.ColorTranslator]::FromHtml("#3be413")
+
+
+$Form.controls.AddRange(@($numberbox,$Tel_Nr,$mailbox,$namebox,$TextBox1,$Label1,$Label2,$betrefflable,$infolable,$betreffbox,$moreinfobox,$company,$cancle,$coppybutton,$ComboBox1,$ComboBox1,$mailbtn))
 
 
 $cancle.Add_Click({$form.Close()})
@@ -156,9 +174,53 @@ $coppybutton.Add_Click(
     $text = "Telefon Nummer: "+$numberbox.Text +"`r`nE-Mail: "+$mailbox.Text+"`r`nName: "+$namebox.Text+"`r`nFirma: "+$TextBox1.Text+"`r`nBetreff: "+$betreffbox.Text+"`r`nWeitere Infos: "+$moreinfobox.Text
 
     Set-Clipboard $text
-    #$form.Close()
+
+    
+    
+ 
+    $form.Close()
 
 })
+
+
+
+$mailbtn.Add_Click(
+{
+    $Mail = Get-Content "$PSScriptRoot\config.txt"
+    $From = $Mail
+    $To = $ComboBox1.Text
+    $Date = Get-Date
+    $text = "Telefon Nummer: "+$numberbox.Text +"`r`nE-Mail: "+$mailbox.Text+"`r`nName: "+$namebox.Text+"`r`nFirma: "+$TextBox1.Text+"`r`nBetreff: "+$betreffbox.Text+"`r`nWeitere Infos: "+$moreinfobox.Text
+    Write-Host $text
+    $Subject = "Telefonnotiz - "+$env:UserName +" - " +$Date
+    $SMTPServer = "aspmx2.googlemail.com"
+
+    Write-Host $To
+
+    if($To -eq "Empfänger"){
+        [System.Windows.Forms.MessageBox]::Show("Keine Mail addresse","Error",0,16)
+}
+else{
+    try{
+        Send-MailMessage -From "$From" -to "$To" -Subject "$Subject" -Body "$text" -SmtpServer "$SMTPServer" -Encoding ([System.Text.Encoding]::UTF8) -DeliveryNotificationOption OnSuccess
+        Write-Host $Error
+        $check = 1
+        $form.Close()     
+        }
+
+    catch{
+        [System.Windows.Forms.MessageBox]::Show("Mail konnte nicht versandt werden","Error",0,16)
+        $check = 2
+    }
+    if ($check -eq 1){
+    [System.Windows.Forms.MessageBox]::Show("Mail wurde an "+$To +" versendet.","Erfolgreich versendet",0,64)
+    $form.Close()
+    }
+
+}
+
+}
+)
 
 [void]$Form.ShowDialog()
 
