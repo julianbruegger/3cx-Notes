@@ -188,8 +188,10 @@ $coppybutton.Add_Click(
 
 
 $mailbtn.Add_Click(
+    
 {
-    $Mail = Get-Content "$rootpath\config.txt"
+    $Configpath = "C:\Scripts\Telefonie\config.txt"
+    $Mail = Get-Content $Configpath
     $From = $Mail
     $To = $ComboBox1.Text
     $Date = Get-Date
