@@ -5,10 +5,100 @@ try{
     New-Item -Path C:\Scripts\ -Name Telefonie -ItemType directory
 
     $wc = New-Object System.Net.WebClient
-    $wc.DownloadFile("https://github.com/julianbruegger/3cx-Notes/blob/main/Telefon_Notizen.exe", "C:\Scripts\Telefonie\Telefon_Notizen.exe")
+    $wc.DownloadFile("https://github.com/julianbruegger/3cx-Notes/blob/main/Telefon_Notizen.exe?raw=true", "C:\Scripts\Telefonie\Telefon_Notizen.exe")
     New-Item -Path C:\Scripts\Telefonie\ -Name bin -ItemType directory
-    $wc.DownloadFile("https://github.com/julianbruegger/3cx-Notes/blob/main/bin/3cx_notes.png", "C:\Scripts\Telefonie\bin\3cx_notes.png")
-    $wc.DownloadFile("https://github.com/julianbruegger/3cx-Notes/blob/main/bin/favicon.ico", "C:\Scripts\Telefonie\bin\favicon.ico")
+    #Start-BitsTransfer -Source https://github.com/julianbruegger/3cx-Notes/blob/main/bin/3cx_notes.png?raw=true -Destination C:\Scripts\Telefonie\bin\3cx_notes.png
+    $wc.DownloadFile("https://github.com/julianbruegger/3cx-Notes/blob/main/bin/3cx_notes.png?raw=true", "C:\Scripts\Telefonie\bin\3cx_notes.png")
+    $wc.DownloadFile("https://github.com/julianbruegger/3cx-Notes/blob/main/bin/favicon.ico?raw=true", "C:\Scripts\Telefonie\bin\favicon.ico")
+
+    Add-Type -AssemblyName System.Windows.Forms
+    Add-Type -AssemblyName System.Drawing
+
+    $form = New-Object System.Windows.Forms.Form
+    $form.Text = 'Einrichtung 3cx-Notes'
+    $form.Size = New-Object System.Drawing.Size(300,200)
+    $form.StartPosition = 'CenterScreen'
+
+    $okButton = New-Object System.Windows.Forms.Button
+    $okButton.Location = New-Object System.Drawing.Point(75,120)
+    $okButton.Size = New-Object System.Drawing.Size(75,23)
+    $okButton.Text = 'OK'
+    $okButton.DialogResult = [System.Windows.Forms.DialogResult]::OK
+    $form.AcceptButton = $okButton
+    $form.Controls.Add($okButton)
+
+    $cancelButton = New-Object System.Windows.Forms.Button
+    $cancelButton.Location = New-Object System.Drawing.Point(150,120)
+    $cancelButton.Size = New-Object System.Drawing.Size(75,23)
+    $cancelButton.Text = 'Cancel'
+    $cancelButton.DialogResult = [System.Windows.Forms.DialogResult]::Cancel
+    $form.CancelButton = $cancelButton
+    $form.Controls.Add($cancelButton)
+
+    $label = New-Object System.Windows.Forms.Label
+    $label.Location = New-Object System.Drawing.Point(10,20)
+    $label.Size = New-Object System.Drawing.Size(280,20)
+    $label.Text = 'Bitte gebe dein Vorname in das Feld ein:'
+    $form.Controls.Add($label)
+
+    $textBox = New-Object System.Windows.Forms.TextBox
+    $textBox.Location = New-Object System.Drawing.Point(10,40)
+    $textBox.Size = New-Object System.Drawing.Size(260,20)
+    $form.Controls.Add($textBox)
+
+    $form.Topmost = $true
+
+    $form.Add_Shown({$textBox.Select()})
+    $result = $form.ShowDialog()
+
+    if ($result -eq [System.Windows.Forms.DialogResult]::OK)
+    {
+        $Vorname = $textBox.Text
+    }
+    Add-Type -AssemblyName System.Windows.Forms
+    Add-Type -AssemblyName System.Drawing
+
+    $form = New-Object System.Windows.Forms.Form
+    $form.Text = 'Einrichtung 3cx-Notes'
+    $form.Size = New-Object System.Drawing.Size(300,200)
+    $form.StartPosition = 'CenterScreen'
+
+    $okButton = New-Object System.Windows.Forms.Button
+    $okButton.Location = New-Object System.Drawing.Point(75,120)
+    $okButton.Size = New-Object System.Drawing.Size(75,23)
+    $okButton.Text = 'OK'
+    $okButton.DialogResult = [System.Windows.Forms.DialogResult]::OK
+    $form.AcceptButton = $okButton
+    $form.Controls.Add($okButton)
+
+    $cancelButton = New-Object System.Windows.Forms.Button
+    $cancelButton.Location = New-Object System.Drawing.Point(150,120)
+    $cancelButton.Size = New-Object System.Drawing.Size(75,23)
+    $cancelButton.Text = 'Cancel'
+    $cancelButton.DialogResult = [System.Windows.Forms.DialogResult]::Cancel
+    $form.CancelButton = $cancelButton
+    $form.Controls.Add($cancelButton)
+
+    $label = New-Object System.Windows.Forms.Label
+    $label.Location = New-Object System.Drawing.Point(10,20)
+    $label.Size = New-Object System.Drawing.Size(280,20)
+    $label.Text = 'Bitte gebe dein Nachname in das Feld ein:'
+    $form.Controls.Add($label)
+
+    $textBox = New-Object System.Windows.Forms.TextBox
+    $textBox.Location = New-Object System.Drawing.Point(10,40)
+    $textBox.Size = New-Object System.Drawing.Size(260,20)
+    $form.Controls.Add($textBox)
+
+    $form.Topmost = $true
+
+    $form.Add_Shown({$textBox.Select()})
+    $result = $form.ShowDialog()
+
+    if ($result -eq [System.Windows.Forms.DialogResult]::OK)
+    {
+        $Nachname = $textBox.Text
+    }
 
     Add-Type -AssemblyName System.Windows.Forms
     Add-Type -AssemblyName System.Drawing
@@ -52,8 +142,8 @@ try{
 
     if ($result -eq [System.Windows.Forms.DialogResult]::OK)
     {
-        $x = $textBox.Text
-        $x
+        $Mail = $textBox.Text
+        $x = $Vorname + " " +$Nachname +" <" +$Mail +">"
     }
 
     $check = 1

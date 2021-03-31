@@ -6,8 +6,11 @@ TelefonnotizTool ICT-BZ
 
 #>
 
-
 param($number, $name, $else)
+
+$rootpath = "C:\Scripts\Telefonie"      
+
+
 
 $name = $name+$else
 Add-Type -AssemblyName System.Windows.Forms
@@ -19,10 +22,10 @@ $Form.minimumSize = New-Object System.Drawing.Size(650,450)
 $Form.maximumSize = New-Object System.Drawing.Size(650,450) 
 $Form.text                       = "Telefon-Notiz Tool"
 $Form.TopMost                    = $false
-$FormImage = [system.drawing.image]::FromFile($PSScriptRoot+"\bin\3cx_notes.png")
+$FormImage = [system.drawing.image]::FromFile($rootpath+"\bin\3cx_notes.png")
 $Form.BackgroundImage = $FormImage
 $Form.BackgroundImageLayout = "Zoom"
-$Form.icon                       = $PSScriptRoot+"\bin\favicon.ico"
+$Form.icon                       = $rootpath+"\bin\favicon.ico"
 
 
 $numberbox                       = New-Object system.Windows.Forms.TextBox
@@ -186,7 +189,7 @@ $coppybutton.Add_Click(
 
 $mailbtn.Add_Click(
 {
-    $Mail = Get-Content "$PSScriptRoot\config.txt"
+    $Mail = Get-Content "$rootpath\config.txt"
     $From = $Mail
     $To = $ComboBox1.Text
     $Date = Get-Date
